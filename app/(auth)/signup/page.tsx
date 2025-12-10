@@ -65,10 +65,6 @@ export default function SignupPage() {
 
   return (
     <div className="w-full">
-      {/* Logo */}
-      <div className="flex justify-end mb-8">
-        <div className="text-2xl font-bold">TRX</div>
-      </div>
 
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Create an account</h1>
 
@@ -114,19 +110,33 @@ export default function SignupPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Business Category
           </label>
-          <select
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent text-black"
-            value={formData.businessCategory}
-            onChange={(e) => setFormData({...formData, businessCategory: e.target.value})}
-            required
-          >
-            <option value="">Enter last name</option>
-            <option value="technology">Technology</option>
-            <option value="retail">Retail</option>
-            <option value="services">Services</option>
-            <option value="manufacturing">Manufacturing</option>
-            <option value="other">Other</option>
-          </select>
+          <div className="relative">
+  <select
+    className={`w-full appearance-none px-4 py-3 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent 
+      ${formData.businessCategory ? 'text-black' : 'text-gray-400'}`}
+    value={formData.businessCategory}
+    onChange={(e) => setFormData({...formData, businessCategory: e.target.value})}
+    required
+  >
+    <option value="" disabled hidden className='text-gray-400'>
+      Select business category
+    </option>
+  <option value="technology" className="text-black">Technology</option>
+  <option value="retail" className="text-black">Retail</option>
+  <option value="services" className="text-black">Services</option>
+  <option value="manufacturing" className="text-black">Manufacturing</option>
+  <option value="other" className="text-black">Other</option>
+  </select>
+
+  {/* Custom dropdown icon */}
+  <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+    <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
+</div>
+
+
         </div>
 
         {/* Email & Phone */}
@@ -173,21 +183,13 @@ export default function SignupPage() {
           </div>
 
           {/* Password Strength Indicator */}
-          {formData.password && (
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-sm text-gray-600">Password Strength:</span>
-              <span className={`text-sm font-medium ${
-                passwordStrength <= 1 ? 'text-red-600' :
-                passwordStrength === 2 ? 'text-yellow-600' :
-                'text-green-600'
-              }`}>
-                {getStrengthText()}
-              </span>
-            </div>
-          )}
 
           {/* Password Requirements */}
-          <div className="mt-3 space-y-2">
+          <div className="mt-3 space-y-2 text-sm">
+            <PasswordCheck
+              checked={passwordStrength >= 2}
+              text={`Password Strength : ${getStrengthText()}`}
+            />
             <PasswordCheck 
               checked={passwordChecks.noPersonalInfo} 
               text="Cannot contain your name or email address" 
@@ -222,7 +224,7 @@ export default function SignupPage() {
 
         {/* Terms */}
         <p className="text-xs text-center text-[#B3B5BA]">
-          By signing up to create an account I accept company's{' '}
+          By signing up to create an account I accept company's{' '} <br />
           <a href="#" className="text-[#00506F] hover:underline">
             Terms of use & Privacy Policy
           </a>
@@ -240,7 +242,7 @@ function PasswordCheck({ checked, text }: { checked: boolean; text: string }) {
         size={16} 
         className={checked ? 'text-green-600' : 'text-gray-400'} 
       />
-      <span className={`text-sm ${checked ? 'text-gray-700' : 'text-gray-500'}`}>
+      <span className={`text-xs ${checked ? 'text-gray-700' : 'text-gray-500'}`}>
         {text}
       </span>
     </div>

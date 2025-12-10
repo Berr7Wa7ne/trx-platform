@@ -84,21 +84,13 @@ export default function LoginPage() {
           />
 
           {/* Password Strength Indicator */}
-          {formData.password && (
-            <div className="mt-3 flex items-center gap-2">
-              <span className="text-sm text-gray-600">Password Strength :</span>
-              <span className={`text-[12px] font-medium ${
-                passwordStrength <= 1 ? 'text-red-600' :
-                passwordStrength === 2 ? 'text-yellow-600' :
-                'text-green-600'
-              }`}>
-                {getStrengthText()}
-              </span>
-            </div>
-          )}
 
           {/* Password Requirements */}
           <div className="mt-3 space-y-2">
+            <PasswordCheck
+              checked={passwordStrength >= 2} 
+              text={`Password Strength : ${getStrengthText()}`}
+            />
             <PasswordCheck 
               checked={passwordChecks.noPersonalInfo} 
               text="Cannot contain your name or email address" 
@@ -135,13 +127,13 @@ export default function LoginPage() {
         </p>
 
         {/* Terms */}
-        <p className="text-xs text-center text-[#B3B5BA] pt-2">
-          By signing up to create an account I accept Company's{' '}
+        {/* <p className="text-xs text-center text-[#B3B5BA] pt-2">
+          By signing up to create an account I accept Company's{' '} <br />
           <Link href="/terms" className="text-[#00506F] hover:underline">
             Terms of use & Privacy Policy
           </Link>
           .
-        </p>
+        </p> */}
       </div>
     </div>
   );
